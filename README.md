@@ -1,7 +1,7 @@
 # DMDD-Pharma-project
 This project aims to cover the process of customer acquisition through `sales representatives` and placement of orders as per requirements of the `customer` 
 (eg: Doctor, Pharmacy, Hospital) and tracks orders in transactions and gives shipment details  
-## Memebers
+## Members
 ```
 Mandar Jadhav       2784429
 Supreet Munavalli   2687930
