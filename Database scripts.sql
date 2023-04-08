@@ -633,3 +633,4 @@ alter table driver_details add constraint uni_con unique (contact);
 /
 ALTER TABLE DRIVER_DETAILS ADD CONSTRAINT UNI_LIC UNIQUE(LICENCE);
 /
+/
