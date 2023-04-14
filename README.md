@@ -19,15 +19,11 @@ Bhavana Lingareddy  2797386
 - For every transaction, warehouse manager will assign shipping details through `vehicle and driver details tables` and order will be delivered.
 
 ### Code execution
-1. `Database Object Creation and Data Insertion`
+1. `Create_Database_Object_Script`
     * Existing objects,tables,constraints are dropped.
     * Tables are created and data is inserted.
     * Constraints are applied to tables.
-
-2. `DDL_Views Creation`
     * Creates view object in database
-
-3. `Grant Priviledges to Roles`
     * Creates 4 roles :
         - `Master_Admin`
         - `Sales_Rep`
@@ -36,8 +32,26 @@ Bhavana Lingareddy  2797386
     * Role creation script has to be uncommented before execution for first time user.
     * Grants CRUD access database objects to roles. 
 
-4. `Create Users and assign roles`
-    * Creates users under spefic roles to acess vies, tables and can perform CRUD operation as per access level
+3. `Create_Procedures_Functions_Script`
+    * Creates 4 Procedures 
+        - `Insert_External_Transaction`
+        - `Insert_Internal_Transaction`
+        - `Insert_Sales_Rep_Activity` 
+        - `Update_Inventory`
+    * Creates function 
+        - `Invoice_View_RLS`
+    * Creates Triggers 
+        - `Price_Log`
+    * Creates Cursor 
+        - `Cursor_Price_Log`       
 
-5. `Excel file with data`
+3. `Views_Script`
+    * Creates 5 views to generate detailed insights for recorded data.
+        - `Sales_view`
+        - `Rep_Activity_view`
+        - `Shipping_view` 
+        - `Invoice_view`
+        - `Inventory_view`
+
+4. `Excel file with data`
     * This excel has normalized data for each table and can load dummy transactions for all tables.
