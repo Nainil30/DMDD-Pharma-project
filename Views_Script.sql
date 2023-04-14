@@ -100,7 +100,7 @@ FROM
 -- 		This view takes input from  product,driver_details, vehicle_details external_transaction tables. 
 --		This view gives profit values based on transaction and quantity of products sold
 
-create or replace view shipment_view as 
+Create or replace view Shipping_view as 
 SELECT
     w.id as warehouse_id, 
     to_char(e.date_time, 'ww')                             AS shipping_week,
