@@ -46,3 +46,34 @@ order by per_total_conversion desc;
 -- 		This view gives the driver, details for delivering products based on transactions
 -- 		This view takes input from  product,driver_details, vehicle_details external_transaction tables. 
 --		This view gives profit values based on transaction and quantity of products sold
+Create or replace view Shipping_view as 
+SELECT
+    w.id as warehouse_id, 
+    to_char(e.date_time, 'ww')                             AS shipping_week,
+    v.registration_number                                  AS vehicle_num,
+    d.name                                                 AS driver_name,
+    d.contact                                              AS driver_contact,
+    listagg(e.transaction_id, ', ') as transaction_ids, 
+    e.customer_id,
+    c.name                                                 AS customer_name, 
+    (ca.address_line_1||' '||ca.address_line_2 ||', '||ca.city||', '||ca.state||'-'||ca.zip_code||', '||ca.country) as customer_address,
+    (cco.mobile_no) as customer_contact
+FROM
+    dev1.external_transaction e
+    LEFT JOIN customer                  c ON e.customer_id = c.id
+    LEFT JOIN customer_address          ca ON c.id = ca.id
+    LEFT JOIN customer_contact          cco ON c.id = cco.id
+    LEFT JOIN product                   p ON e.product_id = p.id
+    LEFT JOIN warehouse                 w ON c.ref_warehouse_id = w.id
+    LEFT JOIN sales_representative      s ON s.ref_warehouse_id = w.id
+    LEFT JOIN vehicle_details           v ON w.vehicle_id = v.id
+    LEFT JOIN driver_details            d ON v.driver_id = d.id
+    Group by ( w.id, e.customer_id,
+    c.name, 
+    (ca.address_line_1||' '||ca.address_line_2 ||', '||ca.city||', '||ca.state||'-'||ca.zip_code||', '||ca.country),
+    (cco.mobile_no),
+    to_char(e.date_time, 'ww'), 
+    v.registration_number,
+    d.name,
+    d.contact)
+    order by to_char(e.date_time, 'ww') desc, driver_name;

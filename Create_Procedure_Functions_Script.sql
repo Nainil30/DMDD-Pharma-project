@@ -458,3 +458,23 @@ BEGIN
 END;
 
 
+--cursor mahavir product_price_update
+declare 
+v_id product.id%type;
+v_cost_price product.cost_price%type;
+v_selling_price product.selling_price%type;
+cursor c_product_update is select id, cost_price, selling_price from product;
+begin 
+open c_product_update;
+loop 
+v_cost_price := 0;
+v_selling_price := 0;
+fetch c_product_update into v_id, v_cost_price, v_selling_price;
+exit when c_product_update%notfound;
+v_cost_price:= v_cost_price + 1;
+v_selling_price:= v_selling_price + 1;
+update product set cost_price = v_cost_price, selling_price = v_selling_price;
+end loop;
+close c_product_update;
+end ;
+
