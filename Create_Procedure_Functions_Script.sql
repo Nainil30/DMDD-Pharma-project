@@ -4,7 +4,7 @@
 --	This procedure takes input from sales representative and inputs data for all parameters of a meeting
 --	This procedure checks for conversion flag and edits all tables (customer, custmer_address,customer_contact)
 
-/*supreet recheck
+
 create or replace PROCEDURE insert_sales_rep_activity
 (
 v_SALESREP_ID sales_rep_activity.SALESREP_ID%TYPE,
@@ -114,7 +114,7 @@ EXCEPTION
 		when no_data_found then
 			dbms_output.put_line('Incorrect Customer Details');
 END;
-*/
+
 
 
 
