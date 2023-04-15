@@ -116,7 +116,9 @@ EXCEPTION
 END;
 */
 
---Mandar
+
+
+
 --Internal_Transaction :
 --This procedure takes input from warehouse manager  by accepting parameters(warehouse_from ,warehouse_to,product_id,quantity) 
 --This procedure updates stock present in inventory automatically  
@@ -139,7 +141,9 @@ As
 	c_name int;
 	c_name1 int;
 	c_prod int;
+
 Begin 
+
 		select count(*) into c_name  from warehouse where id=war_fr;
 		select count(*) into c_name1  from warehouse where id=war_to;
 		select count(*) into c_prod  from product where id=prod_id;
@@ -160,6 +164,7 @@ Begin
         raise exc_SAME_WAREHOUSE;
     end if;
 
+
         select product_quantity into old_qty_fr from inventory where warehouse_id = war_fr and  product_id = prod_id;
         select product_quantity into old_qty_to from inventory where warehouse_id = war_to and  product_id = prod_id;
         new_qty_fr := old_qty_fr - qty;
@@ -179,6 +184,8 @@ Begin
         dbms_output.put_line('Maximum Quantity Available in Warehouse ' ||  war_fr || ' is ' || old_qty_fr);
     end if;
 
+
+
 EXCEPTION 
 	    WHEN exc_warehouse THEN
            DBMS_OUTPUT.PUT_LINE('WAREHOUSE FROM ID INVALID');
@@ -192,6 +199,8 @@ EXCEPTION
          DBMS_OUTPUT.PUT_LINE('INVALID TRANSACTION');
 End;
 /
+
+
 
 --External_Transaction :
 --This procedure takes input from sales representative by accepting paameters(product_id,customer_id,transaction_type,quantity) 

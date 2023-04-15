@@ -19,13 +19,13 @@ on s.salesrep_id = sr.id
 order by conversion_percetage desc;
 
 
---MANDAR
+
 -- 2. INVOICE VIEW 
 -- 		This view will provide details pertaining to customer transaction.
 -- 		This view takes input from external_transaction table, customer table, warehouse and product table 
 -- 	    This view generates total price of order products, expected delivery date and delivery driver details 
 
-/*
+
 create or replace view invoice_view as
 select e.transaction_id, e.customer_id, c.name as customer_name, p.name as product_name, p.selling_price as unit_price, e.quantity as qty,
 case when lower(e.transaction_type) = 'p' then (p.selling_price * e.quantity)
@@ -49,7 +49,8 @@ left join vehicle_details v
 on w.vehicle_id = v.id
 left join driver_details d
 on v.driver_id = d.id;
-*/
+
+
 
 
 --MAHAVIR
