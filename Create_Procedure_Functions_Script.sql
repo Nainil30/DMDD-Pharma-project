@@ -193,7 +193,6 @@ EXCEPTION
 End;
 /
 
---Bhavana
 --External_Transaction :
 --This procedure takes input from sales representative by accepting paameters(product_id,customer_id,transaction_type,quantity) 
 --and place transaction based on return and purchase and updates 
@@ -217,7 +216,8 @@ As
 	exc_incorrect_tran_type exception;
     c_product int;
 	c_customer integer;
-	
+
+
 Begin
 	select count(*) into c_product from product where id=prod_id;
 	select count(*) into c_customer from customer where id=cust_id;
@@ -235,18 +235,15 @@ Begin
         raise exc_incorrect_tran_type;
     end if; 
     
-
     select ref_warehouse_id into ref_war from customer where id = cust_id;
     select id into sales_rep from sales_representative where ref_warehouse_id = ref_war;
     select product_quantity into inv_val from inventory where product_id = prod_id and warehouse_id = ref_war; 
     select product_quantity into old_qty from inventory where product_id = prod_id and warehouse_id = ref_war;
-    
-    
+        
 	if (inv_val < qnt and lower(trans_type) = 'p') then
         raise exc_insufficient_qty;
     end if;
     
-
 	if (inv_val >= qnt and lower(trans_type) = 'p') then 
         insert into external_transaction values (EXTERNAL_TRANSACTION_SEQ.NEXTVAL, prod_id, cust_id, upper(trans_type), dt_time ,qnt);
         commit;
@@ -263,9 +260,7 @@ Begin
         commit;
     end if;
 
- 
-
-exception
+ exception
 		WHEN exc_product THEN
            DBMS_OUTPUT.PUT_LINE('Entered product id is incorrect');
         WHEN exc_customer THEN
@@ -280,7 +275,6 @@ end;
 /
 
 
---Nainil
 -- INVENTORY UPDATE:
 --	This procedure takes input from warehouse manager(warehouse_id,product_id,quantity) and updates inventory 
 CREATE OR REPLACE PROCEDURE UPDATE_INVENTORY
