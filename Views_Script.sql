@@ -122,13 +122,12 @@ FROM
 */
 
 
---BHAVANA
 -- 5. SHIPMENT VIEW 
 -- 		This view gives the driver, details for delivering products based on transactions
 -- 		This view takes input from  product,driver_details, vehicle_details external_transaction tables. 
 --		This view gives profit values based on transaction and quantity of products sold
 
-/*
+
 Create or replace view Shipping_view as 
 SELECT
     w.id as warehouse_id, 
@@ -160,4 +159,3 @@ FROM
     d.name,
     d.contact)
     order by to_char(e.date_time, 'ww') desc, driver_name;
-*/
