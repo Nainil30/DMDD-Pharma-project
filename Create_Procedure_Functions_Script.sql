@@ -7,7 +7,7 @@
 /*supreet recheck
 create or replace PROCEDURE insert_sales_rep_activity
 (
-SALESREP_ID sales_rep_activity.SALESREP_ID%TYPE,
+v_SALESREP_ID sales_rep_activity.SALESREP_ID%TYPE,
 CUSTOMER_NAME_V IN sales_rep_activity.CUSTOMER_NAME%TYPE,
 INTERACTION_TYPE_V IN sales_rep_activity.INTERACTION_TYPE%TYPE,
 CUSTOMER_TYPE_V IN sales_rep_activity.CUSTOMER_TYPE%TYPE,
@@ -43,7 +43,7 @@ BEGIN
 	select CUSTOMER_TYPE_V INTO V_CUSTOMER_TYPE FROM DUAL;
 	select INTERACTION_DURATION_V INTO V_CUSTOMER_CONVERTED from dual;
 	SELECT CUSTOMER_FLAG_V INTO V_CUSTOMER_CONVERTED FROM DUAL;
-    select count(*) into Salesrep_id_v from sales_representative where id=SALESREP_ID;
+    select count(*) into Salesrep_id_v from sales_representative where id=v_SALESREP_ID;
     
     
     
@@ -73,7 +73,7 @@ BEGIN
 	END IF;
     
     
-     INSERT INTO sales_rep_activity VALUES(SALES_REP_ACTIVITY_SEQ.nextval, SALESREP_ID_V, initcap(CUSTOMER_NAME_V), upper(INTERACTION_TYPE_V), upper(CUSTOMER_TYPE_V), INTERACTION_DATE_V, 
+     INSERT INTO sales_rep_activity VALUES(SALES_REP_ACTIVITY_SEQ.nextval, v_SALESREP_ID, initcap(CUSTOMER_NAME_V), upper(INTERACTION_TYPE_V), upper(CUSTOMER_TYPE_V), INTERACTION_DATE_V, 
                 INTERACTION_DURATION_V, 
                 initcap(ADDRESS_LINE_1_V), initcap(ADDRESS_LINE_2_V), initcap(CITY_V), initcap(REGION_V), upper(STATE_V), ZIPCODE_V, upper(COUNTRY_V),  
                 MOBILE_NO_V, lower(EMAIL_V),
@@ -81,7 +81,7 @@ BEGIN
       COMMIT;
 
    IF (lower(CUSTOMER_FLAG_V) = 'y') then 
-       select ref_warehouse_id into WAREHOUSE_V from sales_representative where id = SALESREP_ID_V;
+       select ref_warehouse_id into WAREHOUSE_V from sales_representative where id = v_SALESREP_ID;
 
          INSERT INTO customer
          VALUES(CUSTOMER_SEQ.nextval, SALES_REP_ACTIVITY_SEQ.currval, WAREHOUSE_V, initcap(CUSTOMER_NAME_V), upper(CUSTOMER_type_V));
@@ -327,39 +327,36 @@ EXCEPTION
 END;
 /
 
---Supreet recheck
 --	This package takes input from sales representative and inputs data for all parameters of a meeting
 --	This package checks for conversion flag and edits all tables (customer, custmer_address,customer_contact)
-create or replace PROCEDURE insert_sales_rep_activity
-CREATE OR REPLACE PACKAGE CUSTOMER_ONBOARDING 
+create or replace PACKAGE CUSTOMER_ONBOARDING 
 AS
  PROCEDURE ONBOARD_DETAILS;
  PROCEDURE insert_sales_rep_activity
 (
-SALESREP_ID_V  sales_rep_activity.SALESREP_ID%TYPE,
-CUSTOMER_NAME_V IN  sales_rep_activity.CUSTOMER_NAME%TYPE,
-INTERACTION_TYPE_V IN  sales_rep_activity.INTERACTION_TYPE%TYPE,
-CUSTOMER_TYPE_V IN  sales_rep_activity.CUSTOMER_TYPE%TYPE,
-INTERACTION_DATE_V IN  sales_rep_activity.interaction_date%TYPE,
-INTERACTION_DURATION_V IN  sales_rep_activity.INTERACTION_DURATION%TYPE,
-ADDRESS_LINE_1_V IN  sales_rep_activity.ADDRESS_LINE_1%TYPE,
-ADDRESS_LINE_2_V IN  sales_rep_activity.ADDRESS_LINE_2%TYPE,
-CITY_V IN  sales_rep_activity.CITY%TYPE,
-REGION_V IN  sales_rep_activity.REGION%TYPE,
-STATE_V IN  sales_rep_activity.STATE%TYPE,
-ZIPCODE_V IN  sales_rep_activity.ZIPCODE%TYPE,
-COUNTRY_V IN  sales_rep_activity.country%TYPE,
-MOBILE_NO_V IN  sales_rep_activity.MOBILE_NO%TYPE,
-EMAIL_V IN  sales_rep_activity.EMAIL_ID%TYPE,
-CUSTOMER_FLAG_V IN  sales_rep_activity.CUSTOMER_CONVERTED_FLAG%TYPE
+v_SALESREP_ID sales_rep_activity.SALESREP_ID%TYPE,
+CUSTOMER_NAME_V IN sales_rep_activity.CUSTOMER_NAME%TYPE,
+INTERACTION_TYPE_V IN sales_rep_activity.INTERACTION_TYPE%TYPE,
+CUSTOMER_TYPE_V IN sales_rep_activity.CUSTOMER_TYPE%TYPE,
+INTERACTION_DATE_V IN sales_rep_activity.interaction_date%TYPE,
+INTERACTION_DURATION_V IN sales_rep_activity.INTERACTION_DURATION%TYPE,
+ADDRESS_LINE_1_V IN sales_rep_activity.ADDRESS_LINE_1%TYPE,
+ADDRESS_LINE_2_V IN sales_rep_activity.ADDRESS_LINE_2%TYPE,
+CITY_V IN sales_rep_activity.CITY%TYPE,
+REGION_V IN sales_rep_activity.REGION%TYPE,
+STATE_V IN sales_rep_activity.STATE%TYPE,
+ZIPCODE_V IN sales_rep_activity.ZIPCODE%TYPE,
+COUNTRY_V IN sales_rep_activity.country%TYPE,
+MOBILE_NO_V IN sales_rep_activity.MOBILE_NO%TYPE,
+EMAIL_V IN sales_rep_activity.EMAIL_ID%TYPE,
+CUSTOMER_FLAG_V IN sales_rep_activity.CUSTOMER_CONVERTED_FLAG%TYPE
 );
-END CUSTOMER_ONBOARDING;
+END;
 /
-CREATE OR REPLACE PACKAGE BODY CUSTOMER_ONBOARDING AS 
-PROCEDURE insert_sales_rep_activity
+create or replace PACKAGE BODY CUSTOMER_ONBOARDING AS 
 PROCEDURE insert_sales_rep_activity
 (
-SALESREP_ID sales_rep_activity.SALESREP_ID%TYPE,
+v_SALESREP_ID in sales_rep_activity.SALESREP_ID%TYPE,
 CUSTOMER_NAME_V IN sales_rep_activity.CUSTOMER_NAME%TYPE,
 INTERACTION_TYPE_V IN sales_rep_activity.INTERACTION_TYPE%TYPE,
 CUSTOMER_TYPE_V IN sales_rep_activity.CUSTOMER_TYPE%TYPE,
@@ -395,7 +392,7 @@ BEGIN
 	select CUSTOMER_TYPE_V INTO V_CUSTOMER_TYPE FROM DUAL;
 	select INTERACTION_DURATION_V INTO V_CUSTOMER_CONVERTED from dual;
 	SELECT CUSTOMER_FLAG_V INTO V_CUSTOMER_CONVERTED FROM DUAL;
-    select count(*) into Salesrep_id_v from sales_representative where id=SALESREP_ID;
+    select count(*) into Salesrep_id_v from sales_representative where id=v_SALESREP_ID;
     
     
     
@@ -425,7 +422,7 @@ BEGIN
 	END IF;
     
     
-     INSERT INTO sales_rep_activity VALUES(SALES_REP_ACTIVITY_SEQ.nextval, SALESREP_ID_V, initcap(CUSTOMER_NAME_V), upper(INTERACTION_TYPE_V), upper(CUSTOMER_TYPE_V), INTERACTION_DATE_V, 
+     INSERT INTO sales_rep_activity VALUES(SALES_REP_ACTIVITY_SEQ.nextval, v_SALESREP_ID, initcap(CUSTOMER_NAME_V), upper(INTERACTION_TYPE_V), upper(CUSTOMER_TYPE_V), INTERACTION_DATE_V, 
                 INTERACTION_DURATION_V, 
                 initcap(ADDRESS_LINE_1_V), initcap(ADDRESS_LINE_2_V), initcap(CITY_V), initcap(REGION_V), upper(STATE_V), ZIPCODE_V, upper(COUNTRY_V),  
                 MOBILE_NO_V, lower(EMAIL_V),
@@ -433,7 +430,7 @@ BEGIN
       COMMIT;
 
    IF (lower(CUSTOMER_FLAG_V) = 'y') then 
-       select ref_warehouse_id into WAREHOUSE_V from sales_representative where id = SALESREP_ID_V;
+       select ref_warehouse_id into WAREHOUSE_V from sales_representative where id = v_SALESREP_ID;
 
          INSERT INTO customer
          VALUES(CUSTOMER_SEQ.nextval, SALES_REP_ACTIVITY_SEQ.currval, WAREHOUSE_V, initcap(CUSTOMER_NAME_V), upper(CUSTOMER_type_V));
@@ -465,7 +462,8 @@ EXCEPTION
          DBMS_OUTPUT.PUT_LINE('Customer converted flag should be either y or n');
 		when no_data_found then
 			dbms_output.put_line('Incorrect Customer Details');
-END;
+END insert_sales_rep_activity;
+
 PROCEDURE ONBOARD_DETAILS
 AS
 BEGIN
@@ -489,11 +487,10 @@ DBMS_OUTPUT.PUT_LINE('INTERACTION_DURATION');
 DBMS_OUTPUT.PUT_LINE('----------------------------------------------------------');
 DBMS_OUTPUT.PUT_LINE('EXECUTE CUSTOMER_ONBOARD.INSERT_SALES_REP_ACTIVITY TO ONBOARD CUSTOMER');
 END; 
-END CUSTOMER_ONBOARDING; 
-/
+END CUSTOMER_ONBOARDING;
 
 
---Mahavir
+
 --This procedure is used to calculate the profit from start of the year till todays date of every product this profit takes consideration
 --of change in cost in this duration
 
@@ -547,6 +544,102 @@ dbms_output.put_line('    ');
 end loop;
 end;
 /
+
+
+--Trigger price log
+--This trigger will be fired when there is change in cost price and selling price and old prices will be stored in 'product_price_log' table.  
+create or replace TRIGGER price_log
+after update of cost_price, selling_price   on product
+FOR EACH row
+
+BEGIN
+
+    if :new.cost_price <> :old.cost_price or :new.selling_price <> :old.selling_price then
+         INSERT INTO product_price_log (id, name, old_cost_price, old_selling_price,DATE_OF_CHANGE)
+           VALUES (:old.id, :old.name, :old.cost_price, :old.selling_price, SYSDATE);
+    END IF;
+
+
+END;
+
+
+--invoice_view_rls
+--This function is to grant the rowlevel access on specific rows on invoice view to specified customers.
+--So that customer can only view the invoice details of himself. 
+
+create or replace function invoice_view_rls (
+object_schema in varchar2,
+object_name in varchar2
+)
+Return Varchar2
+as 
+predicate varchar2(4000);
+user_count int;
+begin 
+
+select count(username) into user_count from (select username from all_users where lower(username) like 'wmgr%' or lower(username) like 'dev1' or lower(username) like 'dev2' or lower(username) like 'uatd' or lower(username) like 'srep%')
+where lower(username) = lower(sys_context('USERENV', 'SESSION_USER'));
+if (user_count > 0)
+then predicate:= '1=1';
+else
+predicate := 'customer_id = to_number(substr(sys_context(''USERENV'', ''SESSION_USER''), 2))';
+end if;
+return predicate;
+/*
+begin 
+DBMS_RLS.Add_Policy (
+object_schema => 'dev1',
+object_name => 'INVOICE_ViEW',
+policy_name => 'invoice_view_rls',
+function_schema => 'dev1',
+policy_function => 'invoice_view_rls',
+statement_types => 'select'
+);
+End;
+
+drop function  dev1.invoice_view_rls;
+
+begin 
+DBMS_RLS.drop_Policy (
+object_schema => 'dev1',
+object_name => 'INVOICE_ViEW',
+policy_name => 'invoice_view_rls'
+);
+end;
+
+--Grant The execute DBMS_RLS to Dev1
+grant execute on DBMS_RLS to dev1;
+
+--Create User and assigning the role  
+Create user C123007 identified by Customer_123007;
+grant create session to C123007;
+grant select on dev1.invoice_v to C123007;
+*/
+end;
+
+
+
+
+--Function Total_product_sold 
+--This function returns the quantity of particular product sold when from date, to date,and product id is procided as input. 
+
+create or replace function 
+total_product_sold (date_from external_transaction.date_time%type, 
+                                            date_to external_transaction.date_time%type, 
+                                            prod_id external_transaction.product_id%type) RETURN external_transaction.quantity%type
+is 
+f_qnt external_transaction.quantity%type := 0;
+begin 
+select sum(quantity) into f_qnt from (select ext.transaction_id, ext.product_id, ext.transaction_type, 
+case
+when lower(ext.transaction_type) = 'p' then quantity 
+when lower(ext.transaction_type) = 'r' then (-1 * quantity) end as quantity,  p.name from external_transaction ext
+join product p
+on ext.product_id = p.id
+where ext.date_time >= '01-mar-2023' and ext.date_time <= sysdate and ext.product_id = 223001);
+Return f_qnt;
+end;
+
 
 
 

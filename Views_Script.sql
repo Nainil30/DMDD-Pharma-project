@@ -51,21 +51,18 @@ left join driver_details d
 on v.driver_id = d.id;
 
 
-
-
---MAHAVIR
 -- 3. INVENTORY VIEW 
 -- 		This view gives parameters of all products available in warehouses, updated as per transactions.
 -- 		This view takes input from customer, product,warehouse external_transaction tables. 
 --		This view generates a summary of inventory products availabe in warehouse and gives a count and total value as per recorded transactions
 
-/*create or replace view inventory_view as 
+create or replace view inventory_view as 
 select  i.warehouse_id, i.product_id, p.name,  i.product_quantity, p.cost_price,
 (i.product_quantity * p.cost_price) as inventory_cost, 
 sum(i.product_quantity * p.cost_price) over (partition by  i.warehouse_id) as aggregate_inventory_cost from inventory i 
 left join product p 
 on i.product_id = p.id;
-*/
+
 
 --SUPREET
 -- 4. SALES VIEW 
