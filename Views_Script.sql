@@ -1,4 +1,5 @@
 -- Scripts to generate views
+--there are 5 views
 
 -- 1. SALES REPRESENTATIVE ACTIVITY VIEW 
 -- 		This view will provide details for all performce parameters WRT a salesperson.
@@ -6,15 +7,15 @@
 
 create or replace view rep_activity_view as
 select distinct(salesrep_id) as srep_id, (sr.first_name || ' ' || sr.last_name) as srep_name, 
-(select round(sum(b.interaction_duration)/ count(b.interaction_duration), 2) from dev1.sales_rep_activity b where b.salesrep_id = s.salesrep_id) as avg_time_spent,
-(select count(*) from dev1.sales_rep_activity a where a.salesrep_id = s.salesrep_id) as total_interactions, 
-(select count(*) from dev1.sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id) as total_conversions, 
-round(((select count(*) from dev1.sales_rep_activity x where lower(customer_converted_flag) = 'y' and x.salesrep_id = s.salesrep_id and lower(x.interaction_type) = 'email')*100/ (select count(*) from dev1.sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id)), 2) as per_email_conver , 
-round(((select count(*) from dev1.sales_rep_activity y where lower(customer_converted_flag) = 'y' and y.salesrep_id = s.salesrep_id and lower(y.interaction_type) = 'inperson')*100/ (select count(*) from dev1.sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id)), 2) as per_inperson_converted,
-round((select count(salesrep_id) from dev1.sales_rep_activity z where lower(z.customer_converted_flag) = 'y' and z.salesrep_id = s.salesrep_id and lower(z.interaction_type) = 'oncall')*100/ (select count(*) from dev1.sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id),2) as per_oncall_converted, 
-round((select count(*) from dev1.sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id)* 100/ (select count(*) from dev1.sales_rep_activity a where a.salesrep_id = s.salesrep_id), 2) as conversion_percetage
-from dev1.sales_rep_activity s
-join dev1.sales_representative sr 
+(select round(sum(b.interaction_duration)/ count(b.interaction_duration), 2) from  sales_rep_activity b where b.salesrep_id = s.salesrep_id) as avg_time_spent,
+(select count(*) from  sales_rep_activity a where a.salesrep_id = s.salesrep_id) as total_interactions, 
+(select count(*) from  sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id) as total_conversions, 
+round(((select count(*) from  sales_rep_activity x where lower(customer_converted_flag) = 'y' and x.salesrep_id = s.salesrep_id and lower(x.interaction_type) = 'email')*100/ (select count(*) from  sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id)), 2) as per_email_conver , 
+round(((select count(*) from  sales_rep_activity y where lower(customer_converted_flag) = 'y' and y.salesrep_id = s.salesrep_id and lower(y.interaction_type) = 'inperson')*100/ (select count(*) from  sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id)), 2) as per_inperson_converted,
+round((select count(salesrep_id) from  sales_rep_activity z where lower(z.customer_converted_flag) = 'y' and z.salesrep_id = s.salesrep_id and lower(z.interaction_type) = 'oncall')*100/ (select count(*) from  sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id),2) as per_oncall_converted, 
+round((select count(*) from  sales_rep_activity sra where lower(customer_converted_flag) = 'y' and sra.salesrep_id = s.salesrep_id)* 100/ (select count(*) from  sales_rep_activity a where a.salesrep_id = s.salesrep_id), 2) as conversion_percetage
+from  sales_rep_activity s
+join  sales_representative sr 
 on s.salesrep_id = sr.id
 order by conversion_percetage desc;
 
@@ -36,7 +37,7 @@ case when lower(e.transaction_type) = 'p' then 'PURCHASE'
     else 'RETURN' end as order_type, 
 to_char(e.date_time, 'DD-MON-YY') as order_date, to_char((e.date_time + INTERVAL '7' DAY), 'DD-MON-YY') as expected_delivery_date, 
 (s.first_name||' '||s.last_name) as salesrep_name, v.registration_number as vehicle_num, d.name as driver_name, d.contact as driver_contact
-from dev1.external_transaction e
+from  external_transaction e
 left join customer c 
 on e.customer_id = c.id
 left join product p
@@ -139,7 +140,7 @@ SELECT
     (ca.address_line_1||' '||ca.address_line_2 ||', '||ca.city||', '||ca.state||'-'||ca.zip_code||', '||ca.country) as customer_address,
     (cco.mobile_no) as customer_contact
 FROM
-    dev1.external_transaction e
+     external_transaction e
     LEFT JOIN customer                  c ON e.customer_id = c.id
     LEFT JOIN customer_address          ca ON c.id = ca.id
     LEFT JOIN customer_contact          cco ON c.id = cco.id
